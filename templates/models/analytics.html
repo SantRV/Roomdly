@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Santiago Reyes">
+        <meta name="generator" content="Santiago Reyes">
+
+        <!-- Title and Description-->
+        <title>Analytics | Roomdly </title>
+        <meta name="description" content="Roomdly analytics of your room for rent
+        listed on the platform. Find metrics to track the success of your listing While
+        gaining insights on your audience profile.">
+
+        <!-- Small Page Icon -->
+        <link rel="shortcut icon" href="{% static '/icons/roomdly_logo.png' %}" type="image/png">
+
+        <!-- Styles and Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link href="{% static '/styles/global_styles.css' %}" rel="stylesheet">
+        <link href="{% static '/styles/header.css' %}" rel="stylesheet">
+        <link href="{% static '/styles/sidebar.css' %}" rel="stylesheet">
+        <link href="{% static '/styles/analytics_content_area.css' %}" rel="stylesheet">
+        <link href="{% static '/styles/footer_area.css' %}" rel="stylesheet">
+
+        <!-- Styles for image sliders -->
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css" />
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+        <!-- Google Icons -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+        <!-- JQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        
+        <!-- Animations Script -->
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    </head>
+    <body>
+        <div>
+            <div class="header-container">
+                <header class="headerbar">
+                    <!-- Header button left to display and hide sidebar -->
+                    <div class="headerbar-left">
+                        <button class="menu-icon" id="menu-icon" onclick="hideSidebar()">
+                            <img src="{% static '/icons/menu_icon.svg' %}" alt="Menu icon" title="Display sidebar" type="image/csv">
+                        </button>
+                    </div>
+                    <!-- Company logo container -->
+                    <a href="home" class="home-button">
+                        <div class="headerbar-logo">
+                            <div class="company-logo">
+                                <img src="{% static '/icons/roomdly_logo.svg' %}" alt="Roomdly logo" title="Home" type="image/csv">
+                            </div>
+                            <div class="roomdly-title">
+                                Roomdly
+                            </div>
+                        </div>
+                    </a>
+                    <form method="POST" action="explore">
+                        {% csrf_token %}
+                        <div class="search-bar">
+                            <!-- Select to search for Room or a Flatmate -->
+                        <label class="search-type">
+                            <h3 class="input-title">
+                                Looking for:
+                            </h3>
+                            <input list="search-type-selection" name="search" id="search-type-selector" placeholder="Room or Flatmate ?" type="text" max="8" autocorrect="false" spellcheck="false" aria-autocomplete="list">
+                            <datalist id="search-type-selection">
+                                <option value="Room">Room</option>
+                                <option value="Flatmate" class="test">Flatmate</option>
+                            </datalist>
+                        </label>
+                        <div class="line-divisor"></div>
+                        <label class="search-city">
+                            <h3 class="input-title">
+                                Location:
+                            </h3>
+                            <input list="search-location" name="location" id="search-locator" placeholder="City" type="text">
+                            <datalist id="search-location">
+                                <option value="Adelaide, South Australia"></option>
+                                <option value="Brisbane, Queensland"></option>
+                                <option value="Canberra, Australian Capital Territory"></option>
+                                <option value="Darwin, Northern Territory"></option>
+                                <option value="Melbourne, Victoria"></option>
+                                <option value="Perth, Western Australia"></option>
+                                <option value="Sydney, New South Whales"></option>
+                            </datalist>
+                        </label>
+                        <div class="search-container" title="Search">
+                            <a href="" class="search-button">
+                                    <button class="search-button-content" type="submit" onclick="validateInput(event)">
+                                        <img src="{% static '/icons/search_icon.svg' %}" alt="Search icon" title="Search" type="image/csv">
+                                    </button>
+                            </a>
+                        </div>
+                        </div>
+                    </form>
+                    <div class="notifications-bar">
+                        <a href="#" class="notifications-icon" >
+                            <button>
+                                <img src="{% static '/icons/notifications_icon.svg' %}" alt="Notifications icon" title="Notifications" type="image/csv">
+                            </button>
+                        </a>
+                        <a href="login" class="user-icon">
+                            <button>
+                                <img src="{% static '/icons/user_icon.svg' %}" alt="User icon" title="Profile" type="image/csv">
+                            </button>
+                        </a>   
+                    </div>
+                </header>
+                <!-- This Div contains the search box that is displayed on small screens -->
+                <div class="header-phone">
+                    <form method="POST" action="explore">
+                        {% csrf_token %}
+                        <div class="search-bar">
+                            <!-- Select to search for Room or a Flatmate -->
+                        <label class="search-type">
+                            <h3 class="input-title">
+                                Looking for:
+                            </h3>
+                            <input list="search-type-selection-phone" name="search" id="search-type-selector-phone" placeholder="Room or Flatmate ?" type="text" max="8" autocorrect="false" spellcheck="false" aria-autocomplete="list">
+                            <datalist id="search-type-selection-phone">
+                                <option value="Room">Room</option>
+                                <option value="Flatmate" class="test">Flatmate</option>
+                            </datalist>
+                        </label>
+                        <div class="line-divisor"></div>
+                        <label class="search-city">
+                            <h3 class="input-title">
+                                Location:
+                            </h3>
+                            <input list="search-location-phone" name="location" id="search-locator-phone" placeholder="City" type="text">
+                            <datalist id="search-location-phone">
+                                <option value="Adelaide, South Australia"></option>
+                                <option value="Brisbane, Queensland"></option>
+                                <option value="Canberra, Australian Capital Territory"></option>
+                                <option value="Melbourne, Victoria"></option>
+                                <option value="Perth, Western Australia"></option>
+                                <option value="Sydney, New South Whales"></option>
+                            </datalist>
+                        </label>
+                        <div class="search-container" title="Search">
+                            <a href="" class="search-button">
+                                    <button class="search-button-content" type="submit" onclick="validateInput()">
+                                        <img src="{% static '/icons/search_icon.svg' %}" alt="Search icon" title="Search" type="image/csv">
+                                    </button>
+                            </a>
+                        </div>
+                    </form>
+                </header>
+                </div>
+            </div>
+            <main>
+                <div id="body-wrapper">
+                    <!-- SIDEBAR ELEMENT -->
+                    <div id="sidebar-container" class="sidebar-container">
+                        <div id="sidebar" class="sidebar">
+                            <!-- Sidebar element Home -->
+                            <div class="sidebar-item-container">
+                                <a class="sidebar-item" href="home">
+                                    <div class="sidebar-item-icon">
+                                        <img src="{% static '/icons/home.svg' %}" alt="Home icon" title="Home" type="image/png" id="home">
+                                    </div>
+                                    <h3 class="sidebar-item-title">Home</h3>
+                                </a>
+                            </div>
+                            <!-- Sidebar element Explore Map -->
+                            <div class="sidebar-item-container">
+                                <a class="sidebar-item" href="explore">
+                                    <div class="sidebar-item-icon">
+                                        <img src="{% static '/icons/explore.svg' %}" alt="Explore icon" title="Explore Map" type="image/svg">
+                                    </div>
+                                    <h3 class="sidebar-item-title">Explore</h3>
+                                </a>
+                            </div>
+                            <!-- Sidebar element Shortlist -->
+                            <div class="sidebar-item-container">
+                                <a class="sidebar-item" href="shortlist">
+                                    <div class="sidebar-item-icon">
+                                        <img src="{% static '/icons/star.svg' %}" alt="Shortlist icon" title="Shortlist" type="image/svg">
+                                    </div>
+                                    <h3 class="sidebar-item-title">Shortlist</h3>
+                                </a>
+                            </div>
+                            <!-- Sidebar element Messages -->
+                            <div class="sidebar-item-container">
+                                <a class="sidebar-item" href="messages">
+                                    <div class="sidebar-item-icon">
+                                        <img src="{% static '/icons/messages.svg' %}" alt="Messages icon" title="Messages" type="image/svg">
+                                    </div>
+                                    <h3 class="sidebar-item-title">Messages</h3>
+                                </a>
+                            </div>
+                            <!-- Sidebar element Analytics -->
+                            <div class="sidebar-item-container">
+                                <a class="sidebar-item" href="analytics">
+                                    <div class="sidebar-item-icon">
+                                        <img src="{% static '/icons/analytics.svg' %}" alt="Analytics icon" title="Analytics" type="image/svg">
+                                    </div>
+                                    <h3 class="sidebar-item-title">Analytics</h3>
+                                </a>
+                            </div>
+                            <!-- Sidebar element Analytics -->
+                            <div class="sidebar-item-container">
+                                <a class="sidebar-item" href="listings">
+                                    <div class="sidebar-item-icon">
+                                        <img src="{% static '/icons/listings.svg' %}" alt="Listings icon" title="My Listings" type="image/svg">
+                                    </div>
+                                    <h3 class="sidebar-item-title">Listings</h3>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Content section  -->
+                    <div id="content-area" class="content-area">
+                        <section class="content-footer-container">
+                            <section id="content-container" class="content-container">
+                                <!-- Banner section  -->
+                                <div class="page-banner">
+                                    <div class="banner-content">
+                                        <h2 class="banner-title">
+                                            Analytics
+                                        </h2>
+                                    </div>
+                                    <!-- Select listing option -->
+                                    <div class="banner-buttons">
+                                        <div class="banner-listing-container" id="banner-button" title="Select listing">
+                                            <input class="banner-listing" list="select-listing" name="listing-selector" id="banner-listing" placeholder="Select listing" type="text" max="8" autocorrect="false" spellcheck="false" aria-autocomplete="list">
+                                            <datalist id="select-listing">
+                                                <option value="19 Devon Road, Melbourne">19 Devon Road, Melbourne</option>
+                                                <option value="31 Watt Avenue, Melbourne">31 Watt Avenue, Melbourne</option>
+                                            </datalist>                           
+                                        </div>
+                                        <a href="analytics_management" title="Analytics Management">
+                                            <button class="analytics-management" type="button">
+                                                Management
+                                            </button>
+                                        </a>
+                                    </div>                                                                                                 
+                                </div>                                    
+                                <!-- Analytics Content Section -->
+                                <div class="analytics-container">
+                                    <section class="metrics-container">
+                                        <!-- Metrics title and select month-->
+                                        <div class="metrics-title-container">
+                                            <div class="metrics-title">
+                                                Metrics for
+                                                <span class="metrics-date">
+                                                    June 2021
+                                                </span>
+                                            </div>
+                                            <div class="metrics-filter-date" title="Select month">
+                                                <input class="filter-date" list="filter-date" name="search" id="filter-date-input" placeholder="Select month" type="text" max="8" autocorrect="false" spellcheck="false" aria-autocomplete="list">
+                                                <datalist id="filter-date">
+                                                    <option value="January 2021">January 2021</option>
+                                                    <option value="February 2021">February 2021</option>
+                                                </datalist>
+                                            </div>
+                                        </div>
+                                        <div class="metrics-content">
+                                            <!-- Metric card -->
+                                            <div class="metrics-card">
+                                                <div class="metrics-card-title">
+                                                    Views
+                                                </div>
+                                                <div class="metrics-card-value">
+                                                    1245
+                                                </div>
+                                                <div class="metrics-card-difference">
+                                                    <img src="{% static '/icons/increase_icon.svg' %}" class="metrics-difference-icon" title="Increase" alt="Increase">
+                                                
+                                                    <h4 class="metrics-difference-value increase">
+                                                        455
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                            <div class="metrics-card">
+                                                <div class="metrics-card-title">
+                                                    Messages
+                                                </div>
+                                                <div class="metrics-card-value">
+                                                    152
+                                                </div>
+                                                <div class="metrics-card-difference">
+                                                    <img src="{% static '/icons/decrease_icon.svg' %}" class="metrics-difference-icon" title="Decrease" alt="Decrease">
+                                                
+                                                    <h4 class="metrics-difference-value decrease">
+                                                        67
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                            <div class="metrics-card">
+                                                <div class="metrics-card-title">
+                                                    Shortlisted
+                                                </div>
+                                                <div class="metrics-card-value">
+                                                    102
+                                                </div>
+                                                <div class="metrics-card-difference">
+                                                    <img src="{% static '/icons/decrease_icon.svg' %}" class="metrics-difference-icon" title="Decrease" alt="Decrease">
+                                                
+                                                    <h4 class="metrics-difference-value decrease">
+                                                        15
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                            <div class="metrics-card">
+                                                <div class="metrics-card-title">
+                                                    Impressions
+                                                </div>
+                                                <div class="metrics-card-value">
+                                                    10321
+                                                </div>
+                                                <div class="metrics-card-difference">
+                                                    <img src="{% static '/icons/increase_icon.svg' %}" class="metrics-difference-icon" title="Decrease" alt="Decrease">
+                                                    <h4 class="metrics-difference-value increase">
+                                                        1289
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <!-- Statistics section -->
+                                    <section class="statistics-container">
+                                        <div class="statistics-card">
+                                            <!-- Title section -->
+                                            <h2 class="statistics-title">
+                                                Views Count
+                                            </h2>
+                                            <div class="statistics-lineplot-container">
+                                                <div class="statistics-lineplot">
+                                                    <img src="{% static '/icons/lineplot.svg' %}" alt="Lineplot">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="statistics-card">
+                                            <!-- Title section -->
+                                            <h2 class="statistics-title">
+                                                Flatmate Profile
+                                            </h2>
+                                            <div class="flatmate-profile-container">
+                                                <!-- Card with flatmate profile features -->
+                                                <div class="flatmate-profile-card">
+                                                    <div class="flatmate-feature">
+                                                        Gender
+                                                    </div>
+                                                    <!-- Feature slider -->
+                                                    <div class="flatmate-feature-slider">
+                                                        <div class="flatmate-female" title="Female 55%">                                                            
+                                                        </div>
+                                                        <div class="flatmate-male" title="Male 45%">                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Card with flatmate profile features -->
+                                                <div class="flatmate-profile-card">
+                                                    <div class="flatmate-feature">
+                                                        Age
+                                                    </div>
+                                                    <!-- Feature slider -->
+                                                    <div class="flatmate-feature-slider">
+                                                        <div class="under20" title="Under 20 (15%)">                                                            
+                                                        </div>
+                                                        <div class="young-adult" title="21 - 30 Years Old (50%)">                                                            
+                                                        </div>
+                                                        <div class="adult" title="31 - 40 Years Old (20%)">                                                            
+                                                        </div>
+                                                        <div class="mature-adult" title="Over 41 (15%)">                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Card with flatmate profile features -->
+                                                <div class="flatmate-profile-card">
+                                                    <div class="flatmate-feature">
+                                                        Location
+                                                    </div>
+                                                    <!-- Feature slider -->
+                                                    <div class="flatmate-feature-slider">
+                                                        <div class="city1" title="Melbourne,AU 55%">                                                            
+                                                        </div>
+                                                        <div class="city2" title="Adelaide,AU 25%">                                                            
+                                                        </div>
+                                                        <div class="city3" title="Brisbane,AU 20%">                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>                                    
+                                </div>
+                            </section>
+                            <!-- Footer of the page -->
+                            <footer id="page-footer" class="page-footer">
+                                <!-- Footer item and links -->
+                                <div class="footer-item-container">
+                                    <h4 class="footer-title">
+                                        About
+                                    </h4>
+                                    <div class="footer-links">
+                                        <a href="#">
+                                            How Roomdly works
+                                        </a>
+                                        <a href="#">
+                                            Meet the team
+                                        </a>
+                                        <a href="#">
+                                            Mission & Vision
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="footer-item-container">
+                                    <h4 class="footer-title">
+                                        Help
+                                    </h4>
+                                    <div class="footer-links">
+                                        <a href="#">
+                                            FAQs
+                                        </a>
+                                        <a href="#">
+                                            Contact us
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="footer-item-container">
+                                    <h4 class="footer-title">
+                                        Community
+                                    </h4>
+                                    <div class="footer-links">
+                                        <a href="#">
+                                            Stories
+                                        </a>
+                                        <a href="#">
+                                            News
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="footer-divisor">
+                                </div>
+                                <div class="footer-item-container">
+                                    <h4 class="footer-title">
+                                        (c) 2021 Roomdly Inc
+                                    </h4>
+                                    <div class="footer-links">
+                                        <a href="#">
+                                            Privacy Policy
+                                        </a>
+                                        <a href="#">
+                                            Terms & Conditions
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="footer-item-container">
+                                    <h4 class="footer-title">
+                                        Made with 
+                                        <span>
+                                            <img class="footer-heart" src="{% static '/icons/love.gif' %}" type="image/gif" alt="Love">
+                                        </span>
+                                         in Adelaide, SA
+                                    </h4>
+                                    <div class="footer-links-icons">
+                                        <a href="https://www.youtube.com/">
+                                            <button title="YouTube" type="button">
+                                                <img class="social-media-icon" src="{% static '/icons/youtube_icon.svg' %}" alt="YouTube">
+                                            </button>
+                                        </a>
+                                        <a href="https://www.facebook.com/">
+                                            <button title="Facebook" type="button">
+                                                <img class="social-media-icon" src="{% static '/icons/facebook_icon.svg' %}" alt="Facebook">
+                                            </button>
+                                        </a>
+                                        <a href="https://www.instagram.com/">
+                                            <button title="Instagram" type="button">
+                                                <img class="social-media-icon" src="{% static '/icons/instagram_icon.svg' %}" alt="Instagram">
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>            
+                            </footer>
+                        </section>
+                    </div>
+                </div>
+            </main>
+            <!-- Sliders Scripts -->
+            <script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
+            <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>    
+            
+            <!-- App Scripts -->        
+            <script src="{% static '/scripts/header.js' %}"></script>
+            <script src="{% static '/scripts/search_filter.js' %}"></script>
+            <script src="{% static '/scripts/page_banners.js' %}"></script>
+            <script src="{% static '/scripts/room_listings.js' %}"></script>
+            <script src="{% static '/scripts/analytics.js' %}"></script>
+            
+        </div>
+    </body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Santiago Reyes">
+        <meta name="generator" content="Santiago Reyes">
+
+        <!-- Title and Description-->
+        <title>Log In | Roomdly </title>
+        <meta name="description" content="Login or create an account to a Roomdly
+        account">
+
+        <!-- Small Page Icon -->
+        <link rel="shortcut icon" href="static/icons/roomdly_logo.png" type="image/png">
+        
+        <!-- Styles and Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link href="{% static '/styles/global_styles.css' %}" rel="stylesheet">
+        <link href="{% static '/styles/log_in.css' %}" rel="stylesheet">
+
+        <!-- Google Icons -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+        <!-- JQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </head>
+
+    <body>
+        <main class="form-login">
+            <div>
+                <a href="home">
+                    <img class="login-image" src="{% static '/icons/roomdly_logo.svg' %}" alt="Roomdly Logo" type="image/csv">
+                </a>
+                <h1 class="login-title">
+                     Welcome back 
+                </h1>
+                <p class="login-description">
+                    Log in with an existing account
+                </p>
+                <div class="accounts-container">
+                    <div class="accounts-buttons-container">
+                        <button type="button" class="account-button" title="Login with Google">
+                            <img class="account-icon" src="{% static '/icons/google_icon.svg' %}" alt="Google Login">
+                        </button>
+                        <button type="button" class="account-button" title="Login with Facebook">
+                            <img class="account-icon facebook" src="{% static '/icons/facebook_icon.svg' %}" alt="Facebook Login">
+                        </button>
+                        <button type="button" class="account-button" title="Login with Twitter">
+                            <img class="account-icon" src="{% static '/icons/twitter_icon.svg' %}" alt="Twitter Login">
+                        </button>
+                    </div>
+                </div>
+                <p class="login-description">
+                    Or sign in with
+                </p>
+                <form class="form-floating" id="signUpForm" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="email" class="control-label">
+                            Your Email
+                        </label>
+                        <input id="email" name="email" formcontrolname="email" type="email" tabindex="1" autofocus autocomplete="email" class="form-control" placeholder="example@email.com" required>
+                        <!-- Code to put invalid feedback for log in goes here -->
+                    </div>
+                    <div class="form-group">
+                        <div class="password-container">
+                            <label for="password" class="control-label">
+                                Password
+                            </label>
+                            <a href="#" tabindex="2" class="forgot-password" title="Forgot password.">
+                                Forgot?
+                            </a>
+                        </div>
+                        <div class="input-group">
+                            <input id="password" type="password" name="password" formcontrolname="password" tabindex="1" autocomplete="current-password" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" tabindex="1" class="submit-button" disabled id="login-button">
+                        <span>Sign in</span>
+                    </button>
+                    
+                </form>
+
+
+            </div>
+            
+            
+        </main>
+        <script src="{% static '/scripts/login.js' %}"></script>
+    </body>
+</html>
+
+

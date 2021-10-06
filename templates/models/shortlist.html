@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Santiago Reyes">
+        <meta name="generator" content="Santiago Reyes">
+
+        <!-- Title and Description-->
+        <title>Shortlist | Roomdly </title>
+        <meta name="description" content="Shortlist your favourite rooms and compare them in one place, find
+        the perfect place for you to rent with ease and on budget.
+        Roomdly is a platform to find budget accomodation and shared accomodation by connecting available rooms
+        for rent with accomodation seekers.">
+
+        <!-- Small Page Icon -->
+        <link rel="shortcut icon" href="{% static '/icons/roomdly_logo.png' %}" type="image/png">
+
+        <!-- Styles and Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link href="{% static '/styles/global_styles.css' %}" rel="stylesheet">
+        <link href="{% static '/styles/header.css' %}" rel="stylesheet">
+        <link href="{% static '/styles/sidebar.css' %}" rel="stylesheet">
+        <link href="{% static '/styles/shortlist_content_area.css' %}" rel="stylesheet">
+        <link href="{% static '/styles/footer_area.css' %}" rel="stylesheet">
+
+        <!-- Styles for image sliders -->
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css" />
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+        <!-- Google Icons -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+        <!-- JQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        
+        <!-- Animations Script -->
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    </head>
+    <body>
+        <div>
+            <div class="header-container">
+                <header class="headerbar">
+                    <!-- Header button left to display and hide sidebar -->
+                    <div class="headerbar-left">
+                        <button class="menu-icon" id="menu-icon" onclick="hideSidebar()">
+                            <img src="{% static '/icons/menu_icon.svg' %}" alt="Menu icon" title="Display sidebar" type="image/csv">
+                        </button>
+                    </div>
+                    <!-- Company logo container -->
+                    <a href="home" class="home-button">
+                        <div class="headerbar-logo">
+                            <div class="company-logo">
+                                <img src="{% static '/icons/roomdly_logo.svg' %}" alt="Roomdly logo" title="Home" type="image/csv">
+                            </div>
+                            <div class="roomdly-title">
+                                Roomdly
+                            </div>
+                        </div>
+                    </a>
+                    <form method="POST" action="explore">
+                        {% csrf_token %}
+                        <div class="search-bar">
+                            <!-- Select to search for Room or a Flatmate -->
+                        <label class="search-type">
+                            <h3 class="input-title">
+                                Looking for:
+                            </h3>
+                            <input list="search-type-selection" name="search" id="search-type-selector" placeholder="Room or Flatmate ?" type="text" max="8" autocorrect="false" spellcheck="false" aria-autocomplete="list">
+                            <datalist id="search-type-selection">
+                                <option value="Room">Room</option>
+                                <option value="Flatmate" class="test">Flatmate</option>
+                            </datalist>
+                        </label>
+                        <div class="line-divisor"></div>
+                        <label class="search-city">
+                            <h3 class="input-title">
+                                Location:
+                            </h3>
+                            <input list="search-location" name="location" id="search-locator" placeholder="City" type="text">
+                            <datalist id="search-location">
+                                <option value="Adelaide, South Australia"></option>
+                                <option value="Brisbane, Queensland"></option>
+                                <option value="Canberra, Australian Capital Territory"></option>
+                                <option value="Darwin, Northern Territory"></option>
+                                <option value="Melbourne, Victoria"></option>
+                                <option value="Perth, Western Australia"></option>
+                                <option value="Sydney, New South Whales"></option>
+                            </datalist>
+                        </label>
+                        <div class="search-container" title="Search">
+                            <a href="" class="search-button">
+                                    <button class="search-button-content" type="submit" onclick="validateInput(event)">
+                                        <img src="{% static '/icons/search_icon.svg' %}" alt="Search icon" title="Search" type="image/csv">
+                                    </button>
+                            </a>
+                        </div>
+                        </div>
+                    </form>
+
+                    <div class="notifications-bar">
+                        <a href="#" class="notifications-icon" >
+                            <button>
+                                <img src="{% static '/icons/notifications_icon.svg' %}" alt="Notifications icon" title="Notifications" type="image/csv">
+                            </button>
+                        </a>
+                        <a href="login" class="user-icon">
+                            <button>
+                                <img src="{% static '/icons/user_icon.svg' %}" alt="User icon" title="Profile" type="image/csv">
+                            </button>
+                        </a>   
+                    </div>
+                </header>
+                <!-- This Div contains the search box that is displayed on small screens -->
+                <div class="header-phone">
+                    <form method="POST" action="explore">
+                        {% csrf_token %}
+                        <div class="search-bar">
+                            <!-- Select to search for Room or a Flatmate -->
+                        <label class="search-type">
+                            <h3 class="input-title">
+                                Looking for:
+                            </h3>
+                            <input list="search-type-selection-phone" name="search" id="search-type-selector-phone" placeholder="Room or Flatmate ?" type="text" max="8" autocorrect="false" spellcheck="false" aria-autocomplete="list">
+                            <datalist id="search-type-selection-phone">
+                                <option value="Room">Room</option>
+                                <option value="Flatmate" class="test">Flatmate</option>
+                            </datalist>
+                        </label>
+                        <div class="line-divisor"></div>
+                        <label class="search-city">
+                            <h3 class="input-title">
+                                Location:
+                            </h3>
+                            <input list="search-location-phone" name="location" id="search-locator-phone" placeholder="City" type="text">
+                            <datalist id="search-location-phone">
+                                <option value="Adelaide, South Australia"></option>
+                                <option value="Brisbane, Queensland"></option>
+                                <option value="Canberra, Australian Capital Territory"></option>
+                                <option value="Melbourne, Victoria"></option>
+                                <option value="Perth, Western Australia"></option>
+                                <option value="Sydney, New South Whales"></option>
+                            </datalist>
+                        </label>
+                        <div class="search-container" title="Search">
+                            <a href="" class="search-button">
+                                    <button class="search-button-content" type="submit" onclick="validateInput()">
+                                        <img src="{% static '/icons/search_icon.svg' %}" alt="Search icon" title="Search" type="image/csv">
+                                    </button>
+                            </a>
+                        </div>
+                        </div>
+                    </form>
+                </header>
+                </div>
+            </div>
+            <main>
+                <div id="body-wrapper">
+                    <!-- SIDEBAR ELEMENT -->
+                    <div id="sidebar-container" class="sidebar-container">
+                        <div id="sidebar" class="sidebar">
+                            <!-- Sidebar element Home -->
+                            <div class="sidebar-item-container">
+                                <a class="sidebar-item" href="home">
+                                    <div class="sidebar-item-icon">
+                                        <img src="{% static '/icons/home.svg' %}" alt="Home icon" title="Home" type="image/png" id="home">
+                                    </div>
+                                    <h3 class="sidebar-item-title">Home</h3>
+                                </a>
+                            </div>
+                            <!-- Sidebar element Explore Map -->
+                            <div class="sidebar-item-container">
+                                <a class="sidebar-item" href="explore">
+                                    <div class="sidebar-item-icon">
+                                        <img src="{% static '/icons/explore.svg' %}" alt="Explore icon" title="Explore Map" type="image/svg">
+                                    </div>
+                                    <h3 class="sidebar-item-title">Explore</h3>
+                                </a>
+                            </div>
+                            <!-- Sidebar element Shortlist -->
+                            <div class="sidebar-item-container">
+                                <a class="sidebar-item" href="shortlist">
+                                    <div class="sidebar-item-icon">
+                                        <img src="{% static '/icons/star.svg' %}" alt="Shortlist icon" title="Shortlist" type="image/svg">
+                                    </div>
+                                    <h3 class="sidebar-item-title">Shortlist</h3>
+                                </a>
+                            </div>
+                            <!-- Sidebar element Messages -->
+                            <div class="sidebar-item-container">
+                                <a class="sidebar-item" href="messages">
+                                    <div class="sidebar-item-icon">
+                                        <img src="{% static '/icons/messages.svg' %}" alt="Messages icon" title="Messages" type="image/svg">
+                                    </div>
+                                    <h3 class="sidebar-item-title">Messages</h3>
+                                </a>
+                            </div>
+                            <!-- Sidebar element Analytics -->
+                            <div class="sidebar-item-container">
+                                <a class="sidebar-item" href="analytics">
+                                    <div class="sidebar-item-icon">
+                                        <img src="{% static '/icons/analytics.svg' %}" alt="Analytics icon" title="Analytics" type="image/svg">
+                                    </div>
+                                    <h3 class="sidebar-item-title">Analytics</h3>
+                                </a>
+                            </div>
+                            <!-- Sidebar element Analytics -->
+                            <div class="sidebar-item-container">
+                                <a class="sidebar-item" href="listings">
+                                    <div class="sidebar-item-icon">
+                                        <img src="{% static '/icons/listings.svg' %}" alt="Listings icon" title="My Listings" type="image/svg">
+                                    </div>
+                                    <h3 class="sidebar-item-title">Listings</h3>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Content section  -->
+                    <div id="content-area" class="content-area">
+                        <section class="content-footer-container">
+                            <section id="content-container" class="content-container">
+                                <!-- Banner section  -->
+                                <div class="page-banner">
+                                    <div class="banner-content">
+                                        <h2 class="banner-title">
+                                            Your Favourite Places
+                                        </h2>
+                                        <a href="explore" title="Explore more" class="banner-button-container">
+                                            <button class="banner-button">
+                                                Explore More
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div class="banner-animation" id="room-animation-container">
+                                        <lottie-player id="shortlist-animation" src="https://assets4.lottiefiles.com/packages/lf20_q4h79bkv.json"  background="transparent"  speed="0.5" loop  autoplay>
+                                        </lottie-player>
+                                    </div>
+                                </div>                                    
+                                <!-- Feed and Search rooms -->
+                                <div class="feed-container">
+                                    <div class="feed">
+                                        <div class="room-card">
+                                            <!-- Room pictures -->
+                                            <a href="# " class="room-image">
+                                                <!-- Picture Swiper -->
+                                                <div class="swiper-container">
+                                                    <div class="swiper-wrapper">
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/1.home.jpg' %}" alt="Room pictures">
+                                                        </div>
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/2.home.jpg' %}" alt="Room pictures" >
+                                                        </div>
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/3.home.jpg' %}" alt="Room pictures">
+                                                        </div>                                                 
+                                                    </div>
+                                                    <!-- View previous photo -->
+                                                    <button class="slider-left" title="Previous image" type="button">
+                                                        <div class="arrow-inner"    >
+                                                            <div>
+                                                                &#10094
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                    <!-- View next photo -->
+                                                    <button class="slider-right" title="Previous image" type="button">
+                                                        <div class="arrow-inner">
+                                                            <div>
+                                                                &#10095
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                    <div class="swiper-pagination"></div>                                                
+                                                </div>
+                                            </a>
+                                            <!-- Room description -->
+                                            <a href="#" class="room-description">
+                                                <button class="room-advertiser-container" type="button" title="User"  onclick="window.location.href=''">
+                                                    <img src="{% static '/icons/user_icon.svg' %}" alt="Advertiser icon" type="image/svg">
+                                                </button>
+                                                <div class="room-details-container">
+                                                    <div class="room-details">
+                                                        <div class="room-title-container">
+                                                            <h3 class="room-title">
+                                                                $ 250 
+                                                            </h3>
+                                                            <h4 class="room-title-period">
+                                                                 /Week
+                                                            </h4>
+                                                        </div>
+                                                        <div class="room-address">
+                                                            19 Devon Road, Melbourne, VIC
+                                                        </div>
+                                                        <div class="room-icons-container">
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/bedroom_icon.svg' %}" alt="Bedroom icon" title="Number of bedrooms" type="image/csv">
+                                                                <p id="number-bedroom" class="room-details-number">
+                                                                    3
+                                                                </p>
+                                                            </div>
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/bathroom_icon.svg' %}" alt="Bedroom icon" title="Number of bathrooms" type="image/csv">
+                                                                <p id="number-badroom" class="room-details-number">
+                                                                    2
+                                                                </p>
+                                                            </div>
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/flatmates_icon.svg' %}" alt="Bedroom icon" title="Number of flatmates" type="image/csv">
+                                                                <p id="number-flatmate" class="room-details-number">
+                                                                    4
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="room-availability">
+                                                            Available now
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Save room for shortlist -->
+                                                <button class="room-shortlist-container short-list-active" type="button" title="Save to Shortlist">
+                                                    <img src="{% static '/icons/star_icon.svg' %}" alt="Save to shortlist icon">
+                                                </button>
+                                            </a>
+                                        </div>
+                                        <div class="room-card">
+                                            <!-- Room pictures -->
+                                            <a href="# " class="room-image">
+                                                <div class="swiper-container">
+                                                    <div class="swiper-wrapper">
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/3.home.jpg' %}" alt="Room pictures">
+                                                        </div>
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/2.home.jpg' %}" alt="Room pictures" >
+                                                        </div>
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/1.home.jpg' %}" alt="Room pictures">
+                                                        </div>                                                 
+                                                    </div>
+                                                    <!-- View previous photo -->
+                                                    <button class="slider-left" title="Previous image" type="button">
+                                                        <div class="arrow-inner"    >
+                                                            <div>
+                                                                &#10094
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                    <!-- View next photo -->
+                                                    <button class="slider-right" title="Previous image" type="button">
+                                                        <div class="arrow-inner">
+                                                            <div>
+                                                                &#10095
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                    <div class="swiper-pagination"></div>                                                
+                                                </div>
+                                            </a>
+                                            <!-- Room description -->
+                                            <a href="#" class="room-description">
+                                                <button class="room-advertiser-container" type="button" title="User"  onclick="window.location.href=''">
+                                                    <img src="{% static '/icons/user_icon.svg' %}" alt="Advertiser icon" type="image/svg">
+                                                </button>
+                                                <div class="room-details-container">
+                                                    <div class="room-details">
+                                                        <div class="room-title-container">
+                                                            <h3 class="room-title">
+                                                                $ 180 
+                                                            </h3>
+                                                            <h4 class="room-title-period">
+                                                                 /Week
+                                                            </h4>
+                                                        </div>
+                                                        <div class="room-address">
+                                                            31 Watt Avenue, Melbourne, VIC
+                                                        </div>
+                                                        <div class="room-icons-container">
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/bedroom_icon.svg' %}" alt="Bedroom icon" title="Number of bedrooms" type="image/csv">
+                                                                <p class="room-details-number">
+                                                                    3
+                                                                </p>
+                                                            </div>
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/bathroom_icon.svg' %}" alt="Bedroom icon" title="Number of bathrooms" type="image/csv">
+                                                                <p class="room-details-number">
+                                                                    2
+                                                                </p>
+                                                            </div>
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/flatmates_icon.svg' %}" alt="Bedroom icon" title="Number of flatmates" type="image/csv">
+                                                                <p class="room-details-number">
+                                                                    4
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="room-availability">
+                                                            Available now
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Save room to shortlist -->
+                                                <button class="room-shortlist-container short-list-active" type="button" title="Save to Shortlist">
+                                                    <img src="{% static '/icons/star_icon.svg' %}" alt="Save to shortlist icon">
+                                                </button>
+                                            </a>
+                                        </div>
+                                        <div class="room-card">
+                                            <!-- Room pictures -->
+                                            <a href="# " class="room-image">
+                                                <div class="swiper-container">
+                                                    <div class="swiper-wrapper">
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/5.home.jpg' %}" alt="Room pictures">
+                                                        </div>
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/4.home.jpg' %}" alt="Room pictures" >
+                                                        </div>
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/3.home.jpg' %}" alt="Room pictures">
+                                                        </div>                                                 
+                                                    </div>
+                                                    <!-- View previous photo -->
+                                                    <button class="slider-left" title="Previous image" type="button">
+                                                        <div class="arrow-inner"    >
+                                                            <div>
+                                                                &#10094
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                    <!-- View next photo -->
+                                                    <button class="slider-right" title="Previous image" type="button">
+                                                        <div class="arrow-inner">
+                                                            <div>
+                                                                &#10095
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                    <div class="swiper-pagination"></div>                                                
+                                                </div>
+                                            </a>
+                                            <!-- Room description -->
+                                            <a href="#" class="room-description">
+                                                <button class="room-advertiser-container" type="button" title="User"  onclick="window.location.href=''">
+                                                    <img src="{% static '/icons/user_icon.svg' %}" alt="Advertiser icon" type="image/svg">
+                                                </button>
+                                                <div class="room-details-container">
+                                                    <div class="room-details">
+                                                        <div class="room-title-container">
+                                                            <h3 class="room-title">
+                                                                $ 200 
+                                                            </h3>
+                                                            <h4 class="room-title-period">
+                                                                 /Week
+                                                            </h4>
+                                                        </div>
+                                                        <div class="room-address">
+                                                            88 Wakefield St, Adelaide, SA
+                                                        </div>
+                                                        <div class="room-icons-container">
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/bedroom_icon.svg' %}" alt="Bedroom icon" title="Number of bedrooms" type="image/csv">
+                                                                <p class="room-details-number">
+                                                                    2
+                                                                </p>
+                                                            </div>
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/bathroom_icon.svg' %}" alt="Bedroom icon" title="Number of bathrooms" type="image/csv">
+                                                                <p class="room-details-number">
+                                                                    1
+                                                                </p>
+                                                            </div>
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/flatmates_icon.svg' %}" alt="Bedroom icon" title="Number of flatmates" type="image/csv">
+                                                                <p class="room-details-number">
+                                                                    2
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="room-availability">
+                                                            Available now
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Save room to shortlist -->
+                                                <button class="room-shortlist-container short-list-active" type="button" title="Save to Shortlist">
+                                                    <img src="{% static '/icons/star_icon.svg' %}" alt="Save to shortlist icon">
+                                                </button>
+                                            </a>
+                                        </div>
+                                        <div class="room-card">
+                                            <!-- Room pictures -->
+                                            <a href="# " class="room-image">
+                                                <div class="swiper-container">
+                                                    <div class="swiper-wrapper">
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/6.home.jpg' %}" alt="Room pictures">
+                                                        </div>
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/4.home.jpg' %}" alt="Room pictures" >
+                                                        </div>
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/3.home.jpg' %}" alt="Room pictures">
+                                                        </div>                                                 
+                                                    </div>
+                                                    <!-- View previous photo -->
+                                                    <button class="slider-left" title="Previous image" type="button">
+                                                        <div class="arrow-inner"    >
+                                                            <div>
+                                                                &#10094
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                    <!-- View next photo -->
+                                                    <button class="slider-right" title="Previous image" type="button">
+                                                        <div class="arrow-inner">
+                                                            <div>
+                                                                &#10095
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                    <div class="swiper-pagination"></div>                                                
+                                                </div>
+                                            </a>
+                                            <!-- Room description -->
+                                            <a href="#" class="room-description">
+                                                <button class="room-advertiser-container" type="button" title="User"  onclick="window.location.href=''">
+                                                    <img src="{% static '/icons/user_icon.svg' %}" alt="Advertiser icon" type="image/svg">
+                                                </button>
+                                                <div class="room-details-container">
+                                                    <div class="room-details">
+                                                        <div class="room-title-container">
+                                                            <h3 class="room-title">
+                                                                $ 450 
+                                                            </h3>
+                                                            <h4 class="room-title-period">
+                                                                 /Week
+                                                            </h4>
+                                                        </div>
+                                                        <div class="room-address">
+                                                            Collins Street, Melbourne, VIC
+                                                        </div>
+                                                        <div class="room-icons-container">
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/bedroom_icon.svg' %}" alt="Bedroom icon" title="Number of bedrooms" type="image/csv">
+                                                                <p class="room-details-number">
+                                                                    3
+                                                                </p>
+                                                            </div>
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/bathroom_icon.svg' %}" alt="Bedroom icon" title="Number of bathrooms" type="image/csv">
+                                                                <p class="room-details-number">
+                                                                    2
+                                                                </p>
+                                                            </div>
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/flatmates_icon.svg' %}" alt="Bedroom icon" title="Number of flatmates" type="image/csv">
+                                                                <p class="room-details-number">
+                                                                    4
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="room-availability">
+                                                            Available now
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Save room to shortlist -->
+                                                <button class="room-shortlist-container short-list-active" type="button" title="Save to Shortlist">
+                                                    <img src="{% static '/icons/star_icon.svg' %}" alt="Save to shortlist icon">
+                                                </button>
+                                            </a>
+                                        </div>
+                                        <div class="room-card">
+                                            <!-- Room pictures -->
+                                            <a href="# " class="room-image">
+                                                <div class="swiper-container">
+                                                    <div class="swiper-wrapper">
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/7.home.jpg' %}" alt="Room pictures">
+                                                        </div>
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/4.home.jpg' %}" alt="Room pictures" >
+                                                        </div>
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/3.home.jpg' %}" alt="Room pictures">
+                                                        </div>                                                 
+                                                    </div>
+                                                    <!-- View previous photo -->
+                                                    <button class="slider-left" title="Previous image" type="button">
+                                                        <div class="arrow-inner"    >
+                                                            <div>
+                                                                &#10094
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                    <!-- View next photo -->
+                                                    <button class="slider-right" title="Previous image" type="button">
+                                                        <div class="arrow-inner">
+                                                            <div>
+                                                                &#10095
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                    <div class="swiper-pagination"></div>                                                
+                                                </div>
+                                            </a>
+                                            <!-- Room description -->
+                                            <a href="#" class="room-description">
+                                                <button class="room-advertiser-container" type="button" title="User"  onclick="window.location.href=''">
+                                                    <img src="{% static '/icons/user_icon.svg' %}" alt="Advertiser icon" type="image/svg">
+                                                </button>
+                                                <div class="room-details-container">
+                                                    <div class="room-details">
+                                                        <div class="room-title-container">
+                                                            <h3 class="room-title">
+                                                                $ 380 
+                                                            </h3>
+                                                            <h4 class="room-title-period">
+                                                                 /Week
+                                                            </h4>
+                                                        </div>
+                                                        <div class="room-address">
+                                                            Bennelong Point, Sydney, NSW
+                                                        </div>
+                                                        <div class="room-icons-container">
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/bedroom_icon.svg' %}" alt="Bedroom icon" title="Number of bedrooms" type="image/csv">
+                                                                <p class="room-details-number">
+                                                                    3
+                                                                </p>
+                                                            </div>
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/bathroom_icon.svg' %}" alt="Bedroom icon" title="Number of bathrooms" type="image/csv">
+                                                                <p class="room-details-number">
+                                                                    2
+                                                                </p>
+                                                            </div>
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/flatmates_icon.svg' %}" alt="Bedroom icon" title="Number of flatmates" type="image/csv">
+                                                                <p class="room-details-number">
+                                                                    4
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="room-availability">
+                                                            Available July 31 2021
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Save room to shortlist -->
+                                                <button class="room-shortlist-container short-list-active" type="button" title="Save to Shortlist">
+                                                    <img src="{% static '/icons/star_icon.svg' %}" alt="Save to shortlist icon">
+                                                </button>
+                                            </a>
+                                        </div>
+                                        <div class="room-card">
+                                            <!-- Room pictures -->
+                                            <a href="# " class="room-image">
+                                                <div class="swiper-container">
+                                                    <div class="swiper-wrapper">
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/8.home.jpg' %}" alt="Room pictures">
+                                                        </div>
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/6.home.jpg' %}" alt="Room pictures" >
+                                                        </div>
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/1.home.jpg' %}" alt="Room pictures">
+                                                        </div>                                                 
+                                                    </div>
+                                                    <!-- View previous photo -->
+                                                    <button class="slider-left" title="Previous image" type="button">
+                                                        <div class="arrow-inner"    >
+                                                            <div>
+                                                                &#10094
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                    <!-- View next photo -->
+                                                    <button class="slider-right" title="Previous image" type="button">
+                                                        <div class="arrow-inner">
+                                                            <div>
+                                                                &#10095
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                    <div class="swiper-pagination"></div>                                                
+                                                </div>
+                                            </a>
+                                            <!-- Room description -->
+                                            <a href="#" class="room-description">
+                                                <button class="room-advertiser-container" type="button" title="User"  onclick="window.location.href=''">
+                                                    <img src="{% static '/icons/user_icon.svg' %}" alt="Advertiser icon" type="image/svg">
+                                                </button>
+                                                <div class="room-details-container">
+                                                    <div class="room-details">
+                                                        <div class="room-title-container">
+                                                            <h3 class="room-title">
+                                                                $ 250 
+                                                            </h3>
+                                                            <h4 class="room-title-period">
+                                                                 /Week incl. bills
+                                                            </h4>
+                                                        </div>
+                                                        <div class="room-address">
+                                                            Clarke Street, Melbourne, VIC
+                                                        </div>
+                                                        <div class="room-icons-container">
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/bedroom_icon.svg' %}" alt="Bedroom icon" title="Number of bedrooms" type="image/csv">
+                                                                <p class="room-details-number">
+                                                                    3
+                                                                </p>
+                                                            </div>
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/bathroom_icon.svg' %}" alt="Bedroom icon" title="Number of bathrooms" type="image/csv">
+                                                                <p class="room-details-number">
+                                                                    2
+                                                                </p>
+                                                            </div>
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/flatmates_icon.svg' %}" alt="Bedroom icon" title="Number of flatmates" type="image/csv">
+                                                                <p class="room-details-number">
+                                                                    4
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="room-availability">
+                                                            Available now
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Save room to shortlist -->
+                                                <button class="room-shortlist-container short-list-active" type="button" title="Save to Shortlist">
+                                                    <img src="{% static '/icons/star_icon.svg' %}" alt="Save to shortlist icon">
+                                                </button>
+                                            </a>
+                                        </div>
+                                        <div class="room-card">
+                                            <!-- Room pictures -->
+                                            <a href="# " class="room-image">
+                                                <div class="swiper-container">
+                                                    <div class="swiper-wrapper">
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/9.home.jpg' %}" alt="Room pictures">
+                                                        </div>
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/6.home.jpg' %}" alt="Room pictures" >
+                                                        </div>
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/7.home.jpg' %}" alt="Room pictures">
+                                                        </div>                                                 
+                                                    </div>
+                                                    <!-- View previous photo -->
+                                                    <button class="slider-left" title="Previous image" type="button">
+                                                        <div class="arrow-inner"    >
+                                                            <div>
+                                                                &#10094
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                    <!-- View next photo -->
+                                                    <button class="slider-right" title="Previous image" type="button">
+                                                        <div class="arrow-inner">
+                                                            <div>
+                                                                &#10095
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                    <div class="swiper-pagination"></div>                                                
+                                                </div>
+                                            </a>
+                                            <!-- Room description -->
+                                            <a href="#" class="room-description">
+                                                <button class="room-advertiser-container" type="button" title="User"  onclick="window.location.href=''">
+                                                    <img src="{% static '/icons/user_icon.svg' %}" alt="Advertiser icon" type="image/svg">
+                                                </button>
+                                                <div class="room-details-container">
+                                                    <div class="room-details">
+                                                        <div class="room-title-container">
+                                                            <h3 class="room-title">
+                                                                $ 195 
+                                                            </h3>
+                                                            <h4 class="room-title-period">
+                                                                 /Week
+                                                            </h4>
+                                                        </div>
+                                                        <div class="room-address">
+                                                            McClaren Vale, Adelaide, SA
+                                                        </div>
+                                                        <div class="room-icons-container">
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/bedroom_icon.svg' %}" alt="Bedroom icon" title="Number of bedrooms" type="image/csv">
+                                                                <p class="room-details-number">
+                                                                    3
+                                                                </p>
+                                                            </div>
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/bathroom_icon.svg' %}" alt="Bedroom icon" title="Number of bathrooms" type="image/csv">
+                                                                <p class="room-details-number">
+                                                                    2
+                                                                </p>
+                                                            </div>
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/flatmates_icon.svg' %}" alt="Bedroom icon" title="Number of flatmates" type="image/csv">
+                                                                <p class="room-details-number">
+                                                                    4
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="room-availability">
+                                                            Available now
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Save room to shortlist -->
+                                                <button class="room-shortlist-container short-list-active" type="button" title="Save to Shortlist">
+                                                    <img src="{% static '/icons/star_icon.svg' %}" alt="Save to shortlist icon">
+                                                </button>
+                                            </a>
+                                        </div>
+                                        <div class="room-card">
+                                            <!-- Room pictures -->
+                                            <a href="# " class="room-image">
+                                                <div class="swiper-container">
+                                                    <div class="swiper-wrapper">
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/10.home.jpg' %}" alt="Room pictures">
+                                                        </div>
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/4.home.jpg' %}" alt="Room pictures" >
+                                                        </div>
+                                                        <div class="swiper-slide">
+                                                            <img src="{% static '/images/3.home.jpg' %}" alt="Room pictures">
+                                                        </div>                                                 
+                                                    </div>
+                                                    <!-- View previous photo -->
+                                                    <button class="slider-left" title="Previous image" type="button">
+                                                        <div class="arrow-inner"    >
+                                                            <div>
+                                                                &#10094
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                    <!-- View next photo -->
+                                                    <button class="slider-right" title="Previous image" type="button">
+                                                        <div class="arrow-inner">
+                                                            <div>
+                                                                &#10095
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                    <div class="swiper-pagination"></div>                                                
+                                                </div>
+                                            </a>
+                                            <!-- Room description -->
+                                            <a href="#" class="room-description">
+                                                <button class="room-advertiser-container" type="button" title="User"  onclick="window.location.href=''">
+                                                    <img src="{% static '/icons/user_icon.svg' %}" alt="Advertiser icon" type="image/svg">
+                                                </button>
+                                                <div class="room-details-container">
+                                                    <div class="room-details">
+                                                        <div class="room-title-container">
+                                                            <h3 class="room-title">
+                                                                $ 245 
+                                                            </h3>
+                                                            <h4 class="room-title-period">
+                                                                 /Week
+                                                            </h4>
+                                                        </div>
+                                                        <div class="room-address">
+                                                            Church Street, Melbourne, VIC
+                                                        </div>
+                                                        <div class="room-icons-container">
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/bedroom_icon.svg' %}" alt="Bedroom icon" title="Number of bedrooms" type="image/csv">
+                                                                <p class="room-details-number">
+                                                                    3
+                                                                </p>
+                                                            </div>
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/bathroom_icon.svg' %}" alt="Bedroom icon" title="Number of bathrooms" type="image/csv">
+                                                                <p class="room-details-number">
+                                                                    2
+                                                                </p>
+                                                            </div>
+                                                            <div class="room-icons">
+                                                                <img class="detail-icon" src="{% static '/icons/flatmates_icon.svg' %}" alt="Bedroom icon" title="Number of flatmates" type="image/csv">
+                                                                <p class="room-details-number">
+                                                                    4
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="room-availability">
+                                                            Available now
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Save room to shortlist -->
+                                                <button class="room-shortlist-container short-list-active" type="button" title="Save to Shortlist">
+                                                    <img src="{% static '/icons/star_icon.svg' %}" alt="Save to shortlist icon">
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <!-- Footer of the page -->
+                            <footer id="page-footer" class="page-footer">
+                                <!-- Footer item and links -->
+                                <div class="footer-item-container">
+                                    <h4 class="footer-title">
+                                        About
+                                    </h4>
+                                    <div class="footer-links">
+                                        <a href="#">
+                                            How Roomdly works
+                                        </a>
+                                        <a href="#">
+                                            Meet the team
+                                        </a>
+                                        <a href="#">
+                                            Mission & Vision
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="footer-item-container">
+                                    <h4 class="footer-title">
+                                        Help
+                                    </h4>
+                                    <div class="footer-links">
+                                        <a href="#">
+                                            FAQs
+                                        </a>
+                                        <a href="#">
+                                            Contact us
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="footer-item-container">
+                                    <h4 class="footer-title">
+                                        Community
+                                    </h4>
+                                    <div class="footer-links">
+                                        <a href="#">
+                                            Stories
+                                        </a>
+                                        <a href="#">
+                                            News
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="footer-divisor">
+                                </div>
+                                <div class="footer-item-container">
+                                    <h4 class="footer-title">
+                                        (c) 2021 Roomdly Inc
+                                    </h4>
+                                    <div class="footer-links">
+                                        <a href="#">
+                                            Privacy Policy
+                                        </a>
+                                        <a href="#">
+                                            Terms & Conditions
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="footer-item-container">
+                                    <h4 class="footer-title">
+                                        Made with 
+                                        <span>
+                                            <img class="footer-heart" src="{% static '/icons/love.gif' %}" type="image/gif" alt="Love">
+                                        </span>
+                                         in Adelaide, SA
+                                    </h4>
+                                    <div class="footer-links-icons">
+                                        <a href="https://www.youtube.com/">
+                                            <button title="YouTube" type="button">
+                                                <img class="social-media-icon" src="{% static '/icons/youtube_icon.svg' %}" alt="YouTube">
+                                            </button>
+                                        </a>
+                                        <a href="https://www.facebook.com/">
+                                            <button title="Facebook" type="button">
+                                                <img class="social-media-icon" src="{% static '/icons/facebook_icon.svg' %}" alt="Facebook">
+                                            </button>
+                                        </a>
+                                        <a href="https://www.instagram.com/">
+                                            <button title="Instagram" type="button">
+                                                <img class="social-media-icon" src="{% static '/icons/instagram_icon.svg' %}" alt="Instagram">
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>            
+                            </footer>
+                        </section>
+                    </div>
+                </div>
+            </main>
+            <!-- Sliders Scripts -->
+            <script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
+            <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>    
+            
+            <!-- App Scripts -->        
+            <script src="{% static '/scripts/header.js' %}"></script>
+            <script src="{% static '/scripts/search_filter.js' %}"></script>
+            <script src="{% static '/scripts/page_banners.js' %}"></script>
+            <script src="{% static '/scripts/room_listings.js' %}"></script>
+        </div>
+    </body>
+</html>

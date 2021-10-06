@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Santiago Reyes">
+        <meta name="generator" content="Santiago Reyes">
+
+        <!-- Title and Description-->
+        <title>Create Room Listing | Roomdly </title>
+        <meta name="description" content="List a room for rent for free with Roomdly.
+        Find the perfect flatmate on our platform with ease and confidence.">
+
+        <!-- Small Page Icon -->
+        <link rel="shortcut icon" href="{% static '/icons/roomdly_logo.png' %}" type="image/png">
+        
+        <!-- Styles and Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link href="{% static '/styles/global_styles.css' %}" rel="stylesheet">
+        <link href="{% static '/styles/create_listing.css' %}" rel="stylesheet">
+
+        <!-- Google Icons -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+        <!-- JQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </head>
+
+    <body>
+        <main class="form">
+            <div>
+                <a href="home">
+                    <img class="logo" src="{% static '/icons/roomdly_logo.svg' %}" alt="Roomdly Logo" type="image/csv">
+                </a>
+                <h1 class="title">
+                     List your room 
+                </h1>
+                <!-- Form to record the room listing information -->
+                <form class="form-floating" id="newListingForm" method="POST" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="address" class="control-label">
+                            Address 
+                        </label>
+                        <input id="address" name="address" formcontrolname="address" type="text" tabindex="1" autofocus class="form-control" placeholder="Street, city, state, country" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rent" class="control-label">
+                            Weekly rent 
+                        </label>
+                        <input id="rent" name="rent" formcontrolname="rent" type="number" min="0" max="2000" tabindex="1" autofocus  class="form-control" placeholder="$ 0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bond" class="control-label">
+                            Bond required
+                        </label>
+                        <input id="bond" name="bond" formcontrolname="bond" type="number" min="0" max="2000" tabindex="1" autofocus  class="form-control" placeholder="$ 0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="available" class="control-label">
+                            Available from
+                        </label>
+                        <input id="available" name="available" formcontrolname="available" type="date" tabindex="1" autofocus  class="form-control"  required>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-subgroup">
+                            <div class="subgroup">
+                                <label for="flatmates" class="control-label" title="Number of flatmates in the property">
+                                    Num flatmates
+                                </label>
+                                <input id="flatmates" name="flatmates" formcontrolname="flatmates" type="number" min="1" max="10" tabindex="1" autofocus  class="form-control"  required>
+                            </div>
+                            <div class="subgroup">
+                                <label for="toilets" class="control-label" title="Number of toilets in the property">
+                                    Toilets
+                                </label>
+                                <input id="toilets" name="toilets" formcontrolname="toilets" type="number" min="1" max="10" tabindex="1" autofocus  class="form-control"  required>
+                            </div>
+                            <div class="subgroup">
+                                <label for="rooms" class="control-label" title="Number of rooms in the property">
+                                    Rooms
+                                </label>
+                                <input id="rooms" name="rooms" formcontrolname="rooms" type="number" min="1" max="10" tabindex="1" autofocus  class="form-control"  required>
+                            </div>
+                        </div>                        
+                    </div>
+                    <!-- Room features buttons -->
+                    <div class="form-group">
+                        <label class="control-label">
+                            Room features
+                        </label>
+                        <div class="features-container">
+                            <div class="features-buttons-container">
+                                <button id="furnished-button" type="button" class="feature-button" title="Room furnished" name="furnished" onclick="checkboxInput(this.name, this.id)">
+                                    <img class="feature-icon" src="{% static '/icons/furnished.svg' %}" alt="Furnished">
+                                    <p class="feature-description">
+                                        Furnished
+                                    </p>
+                                </button>
+                                <button id="pets-button" name="pets" type="button" class="feature-button" title="Pets allowed" onclick="checkboxInput(this.name, this.id)">
+                                    <img class="feature-icon" src="{% static '/icons/pets.svg' %}" alt="Pets allowed">
+                                    <p class="feature-description">
+                                        Pets
+                                    </p>
+                                </button>
+                                <button id="bills-button" name="bills" type="button" class="feature-button" title="Bills included" onclick="checkboxInput(this.name, this.id)">
+                                    <img class="feature-icon" src="{% static '/icons/bills.svg' %}" alt="Bills included">
+                                    <p class="feature-description">
+                                        Bills
+                                    </p>
+                                </button>
+                                <button id="parking-button" name="parking" type="button" class="feature-button" title="Parking available" onclick="checkboxInput(this.name, this.id)">
+                                    <img class="feature-icon" src="{% static '/icons/parking.svg' %}" alt="Parking available">
+                                    <p class="feature-description">
+                                        Parking
+                                    </p>
+                                </button>
+                                <button id="gym-button" name="gym" type="button" class="feature-button" title="Gym available" onclick="checkboxInput(this.name, this.id)">
+                                    <img class="feature-icon" src="{% static '/icons/gym.svg' %}" alt="Gym available">
+                                    <p class="feature-description">
+                                        Gym
+                                    </p>
+                                </button>
+                                <button id="garden-button" name="garden" type="button" class="feature-button" title="Garden in property" onclick="checkboxInput(this.name, this.id)">
+                                    <img class="feature-icon" src="{% static '/icons/garden.svg' %}" alt="Garden">
+                                    <p class="feature-description">
+                                        Garden
+                                    </p>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Hidden checkbox input that connects to the 'Room features container'-->
+                        <div class="features-input">
+                            <label for="furnished">Furnished</label>
+                            <input type="checkbox" id="furnished" name="furnished" value="furnished">
+                            <label for="pets">Pets</label>
+                            <input type="checkbox" id="pets" name="pets" value="pets">
+                            <label for="bills">Bills</label>
+                            <input type="checkbox" id="bills" name="bills" value="bills">
+                            <label for="parking">Parking</label>
+                            <input type="checkbox" id="parking" name="parking" value="parking">
+                            <label for="gym">Gym</label>
+                            <input type="checkbox" id="gym" name="gym" value="gym">
+                            <label for="garden">Garden</label>
+                            <input type="checkbox" id="garden" name="garden" value="garden">
+                        </div>                        
+                    </div>
+                    <!-- Upload photos -->
+                    <div class="form-group">
+                        <div class="control-label">
+                            Upload photos 
+                        </div>
+                        <label for="photos" class="photos-button">
+                            <img src="{% static '/icons/file_icon.svg' %}" alt="Upload file" title="Upload files">
+                            <input id="photos" name="photos" formcontrolname="photos" type="file" tabindex="1" autofocus class="photo-input"  required multiple>
+
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="control-label">
+                            Room description
+                        </label>
+                        <textarea id="description" name="description" rows="4" cols="0" class="description" required>
+                            
+                        </textarea>                        
+                    </div>
+                    <div class="buttons-container">
+                        <button type="submit" tabindex="1" class="submit-button" id="save-button" disabled>
+                            <span>Save</span>
+                        </button> 
+                        <button type="submit" tabindex="1" class="submit-button" id="submit-button" disabled>
+                            <span>Submit</span>
+                        </button> 
+                    </div>             
+                </form>               
+            </div>            
+        </main>
+        <script src="{% static '/scripts/create_listing.js' %}"></script>
+    </body>
+</html>
